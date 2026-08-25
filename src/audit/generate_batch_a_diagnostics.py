@@ -9,17 +9,17 @@ across 18 families on the validation window 2016-01-01..2024-04-30.
 
 Holdout outcomes (May 2024--June 2026) are never loaded.
 
-Typical PowerShell invocation::
+Typical invocation::
 
-    python src\\audit\\generate_batch_a_diagnostics.py `
-      --notebook "C:\\git\\tesis\\DT_ABLATION_RISK\\notebooks\\1_ablation_walkthrough_all_models.ipynb" `
-      --model-assessment-pickle "C:\\git\\DT-DIO-ETSII-UPM\\src\\portfolio_optimization\\results\\ESWA_wHoldout\\model_assessment.pkl" `
-      --output-dir "C:\\git\\tesis\\DT_ABLATION_RISK\\results\\mendeley\\dt_metrics\\audit_inputs" `
-      --validation-start 2016-01-01 `
-      --validation-end 2024-04-30 `
-      --sanity-sample-size 64 `
-      --n-jobs 1 `
-      --seed 42 `
+    python -m audit.generate_batch_a_diagnostics \\
+      --notebook notebooks/1_ablation_walkthrough_all_models.ipynb \\
+      --model-assessment-pickle results/model_assessment.pkl \\
+      --output-dir results/mendeley/dt_metrics/audit_inputs \\
+      --validation-start 2016-01-01 \\
+      --validation-end 2024-04-30 \\
+      --sanity-sample-size 64 \\
+      --n-jobs 1 \\
+      --seed 42 \\
       --resume
 """
 
@@ -30,6 +30,7 @@ import gc
 import hashlib
 import json
 import logging
+import os
 import sys
 import time
 import traceback
@@ -59,11 +60,18 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_NOTEBOOK = REPO_ROOT / "notebooks" / "1_ablation_walkthrough_all_models.ipynb"
 DEFAULT_METRICS_DIR = REPO_ROOT / "results" / "mendeley" / "dt_metrics"
 DEFAULT_OUTPUT_DIR = DEFAULT_METRICS_DIR / "audit_inputs"
-DEFAULT_MODELS_PATH = Path(r"D:\THESIS\EXPERIMENTS_DT\model_checkpoints")
-DEFAULT_MODEL_CODE_ROOT = Path(r"C:\git\DT-DIO-ETSII-UPM")
+DEFAULT_MODELS_PATH = Path(
+    os.environ.get("DECISION_LOGIC_AUDIT_MODELS_PATH", str(REPO_ROOT / "models"))
+).expanduser()
+DEFAULT_MODEL_CODE_ROOT = Path(
+    os.environ.get("DECISION_LOGIC_AUDIT_MODEL_CODE_ROOT", str(REPO_ROOT))
+).expanduser()
 DEFAULT_ASSESSMENT = Path(
-    r"C:\git\DT-DIO-ETSII-UPM\src\portfolio_optimization\results\ESWA_wHoldout\model_assessment.pkl"
-)
+    os.environ.get(
+        "DECISION_LOGIC_AUDIT_MODEL_ASSESSMENT",
+        str(REPO_ROOT / "results" / "model_assessment.pkl"),
+    )
+).expanduser()
 EXPECTED_N_MODELS = 1728
 EXPECTED_N_FAMILIES = 18
 

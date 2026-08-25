@@ -16,22 +16,20 @@ The script deliberately does NOT:
     analyses;
   * claim that diagnostics predict future Sharpe ratios.
 
-Default paths match the project paths supplied during the ESWA revision work,
-but every path and computational profile can be overridden from the CLI.
+Default paths are repository-relative and overridable from the CLI or
+environment variables.
 
-Typical Windows invocation
---------------------------
-python generate_batch_a_diagnostics.py ^
-  --analysis-repo-root "C:\\git\\tesis\\DT_ABLATION_RISK" ^
-  --model-code-root "C:\\git\\DT-DIO-ETSII-UPM" ^
-  --models-path "D:\\THESIS\\EXPERIMENTS_DT\\model_checkpoints" ^
-  --metrics-dir "C:\\git\\tesis\\DT_ABLATION_RISK\\results\\mendeley\\dt_metrics" ^
-  --model-assessment-pickle "C:\\git\\DT-DIO-ETSII-UPM\\src\\portfolio_optimization\\results\\ESWA_wHoldout\\model_assessment.pkl" ^
-  --profile publication ^
-  --device auto ^
+Typical invocation
+------------------
+python scripts/generate_batch_a_diagnostics.py \\
+  --analysis-repo-root . \\
+  --model-code-root . \\
+  --models-path models \\
+  --metrics-dir results/mendeley/dt_metrics \\
+  --model-assessment-pickle results/model_assessment.pkl \\
+  --profile publication \\
+  --device auto \\
   --resume
-
-Run ``python generate_batch_a_diagnostics.py --help`` for all options.
 """
 
 from __future__ import annotations
@@ -70,6 +68,12 @@ except ImportError:  # pragma: no cover - required only for optional mapping fal
 
 
 LOGGER = logging.getLogger("batch_a_diagnostics")
+_SCRIPT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def _env_path(name: str, default: Path) -> Path:
+    raw = os.environ.get(name)
+    return Path(raw).expanduser() if raw else default
 
 VALIDATION_START = pd.Timestamp("2016-01-01")
 VALIDATION_END = pd.Timestamp("2024-04-30")
@@ -345,38 +349,45 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--analysis-repo-root",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK"),
+        default=_env_path("DECISION_LOGIC_AUDIT_REPO_ROOT", _SCRIPT_ROOT),
         help="Repository containing the manuscript analysis and result directories.",
     )
     parser.add_argument(
         "--model-code-root",
         type=Path,
-        default=Path(r"C:\git\DT-DIO-ETSII-UPM"),
+        default=_env_path("DECISION_LOGIC_AUDIT_MODEL_CODE_ROOT", _SCRIPT_ROOT),
         help="Repository containing models, data, ablation, and representation modules.",
     )
     parser.add_argument(
         "--models-path",
         type=Path,
-        default=Path(r"D:\THESIS\EXPERIMENTS_DT\model_checkpoints"),
+        default=_env_path("DECISION_LOGIC_AUDIT_MODELS_PATH", _SCRIPT_ROOT / "models"),
         help="Root directory containing trained checkpoint folders.",
     )
     parser.add_argument(
         "--metrics-dir",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics"),
+        default=_env_path(
+            "DECISION_LOGIC_AUDIT_METRICS_DIR",
+            _SCRIPT_ROOT / "results" / "mendeley" / "dt_metrics",
+        ),
         help="Directory containing model_cost_sensitivity and related performance tables.",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_diagnostics"),
+        default=_env_path(
+            "DECISION_LOGIC_AUDIT_DIAGNOSTICS_DIR",
+            _SCRIPT_ROOT / "results" / "mendeley" / "dt_diagnostics",
+        ),
         help="Output directory for Batch A diagnostic inputs.",
     )
     parser.add_argument(
         "--model-assessment-pickle",
         type=Path,
-        default=Path(
-            r"C:\git\DT-DIO-ETSII-UPM\src\portfolio_optimization\results\ESWA_wHoldout\model_assessment.pkl"
+        default=_env_path(
+            "DECISION_LOGIC_AUDIT_MODEL_ASSESSMENT",
+            _SCRIPT_ROOT / "results" / "model_assessment.pkl",
         ),
         help="Optional fallback source for identifier reconciliation; portfolio outcomes are not analysed.",
     )

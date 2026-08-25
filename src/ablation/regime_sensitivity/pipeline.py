@@ -33,14 +33,14 @@ from ablation.regime_sensitivity import (
 )
 
 try:
-    from src.model_comparison.regime_sensitivity import (
+    from model_comparison.regime_sensitivity import (
         attributions_to_feat_matrix,
         attributions_to_p_attr,
         pack_inputs,
         run_regime_sensitivity,
     )
 except Exception:
-    from model_comparison.regime_sensitivity import (
+    from src.model_comparison.regime_sensitivity import (
         attributions_to_feat_matrix,
         attributions_to_p_attr,
         pack_inputs,

@@ -8,18 +8,18 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.audit_scoring.benchmark_discovery import (
+from audit_scoring.benchmark_discovery import (
     discover_market_benchmark_candidates,
     select_above_market_families,
     select_authoritative_benchmark,
 )
-from src.audit_scoring.cardinality_controls import (
+from audit_scoring.cardinality_controls import (
     family_raw_cardinality,
     guided_raw_count,
     sample_cardinality_matched_families,
 )
-from src.audit_scoring.targeted_validity import selection_list_hash
-from src.audit_scoring.validity_guards import SourceAccessLog, assert_permitted_analytical_load
+from audit_scoring.targeted_validity import selection_list_hash
+from audit_scoring.validity_guards import SourceAccessLog, assert_permitted_analytical_load
 
 
 def test_benchmark_discovery_selects_gspc(tmp_path: Path):
@@ -43,7 +43,7 @@ def test_benchmark_discovery_selects_gspc(tmp_path: Path):
 def test_ambiguous_benchmark_stops(tmp_path: Path):
     # Force ambiguity by marking both as explicit market in candidates via selection logic:
     # If two candidates have explicitly_called_market_benchmark and reproducible, select returns None.
-    from src.audit_scoring.benchmark_discovery import BenchmarkCandidate
+    from audit_scoring.benchmark_discovery import BenchmarkCandidate
 
     cands = [
         BenchmarkCandidate("^GSPC", "x", "r", "2016-01-01", "2024-04-30", 5, 0.7, True, True, False, ""),

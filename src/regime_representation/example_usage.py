@@ -9,13 +9,8 @@ in decision transformer models.
 import torch
 import numpy as np
 import pandas as pd
-import sys
 import warnings
 warnings.filterwarnings('ignore')
-
-# Add parent directories to path
-sys.path.append("../../")
-sys.path.append("../")
 
 # Import the regime representation analyzer
 from .run_regime_analysis import RegimeRepresentationAnalyzer

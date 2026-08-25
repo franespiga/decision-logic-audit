@@ -1,6 +1,7 @@
 """Core diagnostic computations for Batch A (no CLI / no plotting)."""
 from __future__ import annotations
 
+import argparse
 import gc
 import hashlib
 import importlib
@@ -8,6 +9,7 @@ import inspect
 import json
 import logging
 import math
+import os
 import random
 import re
 import sys
@@ -22,6 +24,13 @@ from scipy import stats
 from sklearn.neighbors import NearestNeighbors
 
 LOGGER = logging.getLogger("batch_a_diagnostics.compute")
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _env_path(name: str, default: Path) -> Path:
+    raw = os.environ.get(name)
+    return Path(raw).expanduser() if raw else default
 
 VALIDATION_START = pd.Timestamp("2016-01-01")
 VALIDATION_END = pd.Timestamp("2024-04-30")
@@ -183,38 +192,45 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--analysis-repo-root",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK"),
+        default=_env_path("DECISION_LOGIC_AUDIT_REPO_ROOT", _REPO_ROOT),
         help="Repository containing the manuscript analysis and result directories.",
     )
     parser.add_argument(
         "--model-code-root",
         type=Path,
-        default=Path(r"C:\git\DT-DIO-ETSII-UPM"),
+        default=_env_path("DECISION_LOGIC_AUDIT_MODEL_CODE_ROOT", _REPO_ROOT),
         help="Repository containing models, data, ablation, and representation modules.",
     )
     parser.add_argument(
         "--models-path",
         type=Path,
-        default=Path(r"D:\THESIS\EXPERIMENTS_DT\model_checkpoints"),
+        default=_env_path("DECISION_LOGIC_AUDIT_MODELS_PATH", _REPO_ROOT / "models"),
         help="Root directory containing trained checkpoint folders.",
     )
     parser.add_argument(
         "--metrics-dir",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics"),
+        default=_env_path(
+            "DECISION_LOGIC_AUDIT_METRICS_DIR",
+            _REPO_ROOT / "results" / "mendeley" / "dt_metrics",
+        ),
         help="Directory containing model_cost_sensitivity and related performance tables.",
     )
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_diagnostics"),
+        default=_env_path(
+            "DECISION_LOGIC_AUDIT_DIAGNOSTICS_DIR",
+            _REPO_ROOT / "results" / "mendeley" / "dt_diagnostics",
+        ),
         help="Output directory for Batch A diagnostic inputs.",
     )
     parser.add_argument(
         "--model-assessment-pickle",
         type=Path,
-        default=Path(
-            r"C:\git\DT-DIO-ETSII-UPM\src\portfolio_optimization\results\ESWA_wHoldout\model_assessment.pkl"
+        default=_env_path(
+            "DECISION_LOGIC_AUDIT_MODEL_ASSESSMENT",
+            _REPO_ROOT / "results" / "model_assessment.pkl",
         ),
         help="Optional fallback source for identifier reconciliation; portfolio outcomes are not analysed.",
     )

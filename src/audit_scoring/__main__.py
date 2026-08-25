@@ -1,4 +1,4 @@
-"""Python module entrypoint: python -m src.audit_scoring"""
+"""Python module entrypoint: python -m audit_scoring"""
 
 from .cli import main
 

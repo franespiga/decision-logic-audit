@@ -69,14 +69,9 @@ import torch
 import numpy as np
 import pandas as pd
 import os
-import sys
 from typing import Dict, Any, Optional
 import warnings
 warnings.filterwarnings('ignore')
-
-# Add parent directories to path
-sys.path.append("../../")
-sys.path.append("../")
 
 # Import regime representation modules
 from .transformations import (

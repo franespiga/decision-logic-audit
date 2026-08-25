@@ -6,12 +6,13 @@ import argparse
 import json
 from pathlib import Path
 
+from .config import DEFAULT_METRICS_DIR, DEFAULT_OUTPUT_DIR, REPO_ROOT
 from .holdout_reporting import run_batch_b
 
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="python -m src.audit_scoring.holdout_cli",
+        prog="python -m audit_scoring.holdout_cli",
         description=(
             "Batch B: temporally separated assessment of frozen Batch A "
             "provisional classifications. Does not recalibrate Batch A."
@@ -20,29 +21,27 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--batch-a-dir",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_screening"),
+        default=DEFAULT_OUTPUT_DIR,
     )
     p.add_argument(
         "--batch-a-verification-dir",
         type=Path,
-        default=Path(
-            r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_screening_verification"
-        ),
+        default=DEFAULT_METRICS_DIR / "audit_screening_verification",
     )
     p.add_argument(
         "--metrics-dir",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics"),
+        default=DEFAULT_METRICS_DIR,
     )
     p.add_argument(
         "--output-dir",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_holdout"),
+        default=DEFAULT_METRICS_DIR / "audit_holdout",
     )
     p.add_argument(
         "--repo-root",
         type=Path,
-        default=Path(r"C:\git\tesis\DT_ABLATION_RISK"),
+        default=REPO_ROOT,
     )
     p.add_argument("--primary-cost-bps", type=int, default=5)
     p.add_argument("--expected-variants-per-family", type=int, default=96)

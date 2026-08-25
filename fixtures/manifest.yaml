@@ -1,0 +1,40 @@
+schema_version: "1.0.0"
+figshare_article_id: 33331437
+figshare_doi: "10.6084/m9.figshare.33331437"
+fixture_license: CC-BY-4.0
+code_license: GPL-3.0-only
+cache_schema: v1
+notes: >
+  Filenames below are the intended Figshare record names. If the published
+  record uses different names, update figshare_filename to match exactly.
+  Binary bytes are never modified; files are renamed only when copied into
+  the local cache layout.
+files:
+  - logical_id: max_quadratic_utility_TI_True.weights
+    figshare_filename: max_quadratic_utility_TI_True.safetensors
+    cache_relative_path: dt/max_quadratic_utility_TI_True/model.safetensors
+    sha256: 439A4B08E6A76C7D97935B61F4E800CFB5DD971218B9EAA7BF7B3906DE67E95E
+    loader: models.model.TrainableDT.from_pretrained
+    model_class: TrainableDT
+    role: Frozen Decision Transformer weights for family max_quadratic_utility_TI_True
+  - logical_id: max_quadratic_utility_TI_True.config
+    figshare_filename: max_quadratic_utility_TI_True.config.json
+    cache_relative_path: dt/max_quadratic_utility_TI_True/config.json
+    sha256: 51F07A5A6AF0A20CAC4A08688BD5E2D164D36D50DC80AD86847EADAD5990A946
+    loader: transformers PretrainedConfig / from_pretrained
+    model_class: DecisionTransformerConfig
+    role: Hugging Face config required to deserialize the Decision Transformer
+  - logical_id: PPO_16_1_TI_True.weights
+    figshare_filename: PPO_16_1_TI_True.best_model.zip
+    cache_relative_path: rl/PPO_16_1_TI_True/best_model.zip
+    sha256: 8CBA96DAFE397C916534B252EC97BD143C279DD3327918D3C7B76FA9D0F80690
+    loader: stable_baselines3.PPO.load
+    model_class: PPO
+    role: Frozen PPO policy for family PPO_16_1_TI_True (lookback 16, rebalance 1)
+  - logical_id: aligned_market_data
+    figshare_filename: aligned_market_data.h5
+    cache_relative_path: data/data.h5
+    sha256: BA6C0848AFFA06C64CC641477A590DAE4339CC6A1D13B7FEFD868BC2BED92B6E
+    loader: ablation.cross_architecture.data.load_market_data
+    model_class: null
+    role: Derived aligned daily market-data HDF5 with technical indicators

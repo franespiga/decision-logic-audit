@@ -12,10 +12,7 @@ import pandas as pd
 from typing import Dict, List, Optional, Tuple, Union, Any
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
-import umap
 from captum.attr import LayerConductance
-import sys
-sys.path.append("../../")
 
 
 
@@ -323,6 +320,13 @@ def create_latent_embeddings(
                 n_iter=kwargs.get('n_iter', 1000)
             )
         elif method.lower() == 'umap':
+            try:
+                import umap
+            except ImportError as exc:
+                raise ImportError(
+                    "UMAP projections require the optional extra `umap-learn`. "
+                    "Install with: pip install 'decision-logic-audit[viz]'"
+                ) from exc
             reducer = umap.UMAP(
                 n_components=n_components,
                 random_state=random_state,

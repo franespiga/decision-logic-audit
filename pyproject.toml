@@ -1,49 +1,105 @@
-[tool.poetry]
-name = "dt-ablation-risk"
-version = "0.1.0"
-description = ""
-authors = ["franespiga <francisco.espiga.fernandez@gmail.com>"]
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = ">=3.12, <3.13"
-h5py = "^3.12.1"
-pandas = "^2.2.3"
-tqdm = "^4.66.5"
-numpy = "<2.0.0"
-pyportfolioopt = "^1.5.5"
-gymnasium = "^1.0.0"
-pyfolio-reloaded = "0.9.5"
-tables = "^3.10.1"
-transformers = {extras = ["torch"], version = "^4.45.2"} #4.40.1
-datasets = "^3.0.1" #2.19.0
-ipython = "^8.28.0"
-jupyter = "^1.1.1"
-numba = "^0.60.0"
-torchvision = {version = "^0.20.1+cu124", source = "pytorch_gpu"}
-torch = {version = "^2.5.1+cu124", source = "pytorch_gpu"}
-xgboost = "^2.1.4"
-shap = "^0.46.0"
-statsmodels = "^0.14.4"
-seaborn = "^0.13.2"
-captum = "^0.7.0"
-matplotlib = "^3.10.1"
-notebook = "^7.3.3"
-stable-baselines3 = "^2.4.0"
-ipykernel = "^7.3.0"
-
-
-[[tool.poetry.source]]
-name = "pytorch-gpu"
-url = "https://download.pytorch.org/whl/cu117"
-priority = "explicit"
-
-
-[[tool.poetry.source]]
-name = "pytorch_gpu"
-url = "https://download.pytorch.org/whl/cu124"
-priority = "explicit"
-
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "decision-logic-audit"
+version = "1.0.0"
+description = "Diagnostic software for auditing decision logic in transformer-based and deep-RL portfolio allocation policies."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = {text = "GPL-3.0-only"}
+authors = [
+    {name = "Francisco Espiga-Fernández", email = "francisco.espiga.fernandez@alumnos.upm.es"},
+    {name = "Joaquín Ordieres-Meré"},
+    {name = "Álvaro García-Sánchez"},
+]
+keywords = [
+    "decision-transformer",
+    "explainability",
+    "portfolio-allocation",
+    "reinforcement-learning",
+    "model-audit",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "numpy>=1.26.4,<2.0.0",
+    "pandas>=2.2.3,<3",
+    "h5py>=3.12.1",
+    "tables>=3.10.1",
+    "scipy>=1.11,<1.16",
+    "scikit-learn>=1.5,<2",
+    "statsmodels==0.14.4",
+    "torch==2.6.0",
+    "captum==0.7.0",
+    "transformers==4.45.2",
+    "safetensors>=0.4.5",
+    "stable-baselines3>=2.4.0,<2.9",
+    "gymnasium>=1.0.0,<2",
+    "PyYAML>=6.0.2",
+    "cloudpickle>=3.0.0",
+    "matplotlib>=3.10.1",
+    "seaborn>=0.13.2",
+    "tqdm>=4.66.5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "build>=1.2",
+]
+viz = [
+    "umap-learn>=0.5.1",
+]
+extra = [
+    "shap>=0.46.0",
+    "xgboost>=2.1.4",
+    "pyportfolioopt>=1.5.5",
+    "pyfolio-reloaded==0.9.5",
+    "plotly>=5.18.0",
+]
+
+[project.scripts]
+decision-logic-audit = "decision_logic_audit.cli:main"
+
+[project.urls]
+Fixtures = "https://doi.org/10.6084/m9.figshare.33331437"
+
+[tool.setuptools]
+include-package-data = true
+license-files = ["LICENSE"]
+package-dir = {"" = "src"}
+py-modules = ["data"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = [
+    "ablation*",
+    "audit*",
+    "audit_scoring*",
+    "attribution*",
+    "decision_logic_audit*",
+    "financial_alignment*",
+    "model_comparison*",
+    "models*",
+    "regime_representation*",
+    "rl_factory_shim*",
+]
+
+[tool.setuptools.package-data]
+decision_logic_audit = ["data/manifest.yaml", "data/metadata/*.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q --import-mode=importlib"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

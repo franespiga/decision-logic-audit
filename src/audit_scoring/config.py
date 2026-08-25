@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any, Dict, List, Sequence, Tuple
@@ -10,11 +11,24 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-DEFAULT_DIAGNOSTIC_PKL_ROOT = Path(r"C:\git\tesis\results\ablation_ESWA_all_models")
-DEFAULT_METRICS_DIR = REPO_ROOT / "results" / "mendeley" / "dt_metrics"
+
+def _env_path(name: str, default: Path) -> Path:
+    raw = os.environ.get(name)
+    return Path(raw).expanduser() if raw else default
+
+
+DEFAULT_DIAGNOSTIC_PKL_ROOT = _env_path(
+    "DECISION_LOGIC_AUDIT_DIAGNOSTIC_PKL_ROOT",
+    REPO_ROOT / "results" / "diagnostics",
+)
+DEFAULT_METRICS_DIR = _env_path(
+    "DECISION_LOGIC_AUDIT_METRICS_DIR",
+    REPO_ROOT / "results" / "mendeley" / "dt_metrics",
+)
 DEFAULT_OUTPUT_DIR = DEFAULT_METRICS_DIR / "audit_screening"
-DEFAULT_MODEL_ASSESSMENT = Path(
-    r"C:\git\DT-DIO-ETSII-UPM\src\portfolio_optimization\results\ESWA_wHoldout\model_assessment.pkl"
+DEFAULT_MODEL_ASSESSMENT = _env_path(
+    "DECISION_LOGIC_AUDIT_MODEL_ASSESSMENT",
+    REPO_ROOT / "results" / "model_assessment.pkl",
 )
 DEFAULT_FAMILY_MAPPING_REPORT = (
     DEFAULT_METRICS_DIR / "audit_inputs" / "family_mapping_report.csv"

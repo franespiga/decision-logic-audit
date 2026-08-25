@@ -14,7 +14,7 @@ from .validity_pipeline import run_batch_c, run_inspect_only
 def build_parser() -> argparse.ArgumentParser:
     d = DEFAULT_VALIDITY_CONFIG
     p = argparse.ArgumentParser(
-        prog="python -m src.audit_scoring.validity_cli",
+        prog="python -m audit_scoring.validity_cli",
         description=(
             "Batch C: diagnostic-validity overlay for frozen Batch A assessments. "
             "Does not modify Batch A or Batch B decisions."

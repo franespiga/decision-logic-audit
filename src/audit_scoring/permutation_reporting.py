@@ -390,13 +390,13 @@ Operational thresholds are study-specific; permutation evidence does not establi
 This supplement documents the regime-preserving donor permutation algorithm, validation sample composition, donor assignments, seed-level results, single-family effects, guided curves, random-control distributions, cardinality matching, TI and above-market subgroup summaries, mandatory-family target sensitivity, state plausibility, and the complete 18-family overlay.
 Reproduction:
 \begin{verbatim}
-poetry run python -m src.audit_scoring.permutation_cli ^
-  --repository-root "C:\git\tesis\DT_ABLATION_RISK" ^
-  --diagnostic-pkl-root "C:\git\tesis\results\ablation_ESWA_all_models" ^
-  --batch-a-dir "C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_screening" ^
-  --batch-c-dir "C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_validity" ^
-  --batch-c2-dir "C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_validity_targeted" ^
-  --output-dir "C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_validity_permutation" ^
+python -m audit_scoring.permutation_cli ^
+  --repository-root "<repository-root>" ^
+  --diagnostic-pkl-root "<diagnostic-pkl-root>" ^
+  --batch-a-dir "<batch-a-dir>" ^
+  --batch-c-dir "<batch-c-dir>" ^
+  --batch-c2-dir "<batch-c2-dir>" ^
+  --output-dir "<output-dir>" ^
   --force
 \end{verbatim}
 """
@@ -518,7 +518,7 @@ def write_report(cfg: PermutationConfig, tables: Mapping[str, pd.DataFrame], pri
         "",
         "## 21. Reproduction command",
         "```",
-        'poetry run python -m src.audit_scoring.permutation_cli --force',
+        'python -m audit_scoring.permutation_cli --force',
         "```",
         "",
         f"QC all_pass={qc.get('all_pass')}",

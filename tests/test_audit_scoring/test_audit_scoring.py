@@ -9,33 +9,33 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.audit_scoring.aggregation import aggregate_family_raw
-from src.audit_scoring.config import PROFILES, validate_weights
-from src.audit_scoring.contribution import (
+from audit_scoring.aggregation import aggregate_family_raw
+from audit_scoring.config import PROFILES, validate_weights
+from audit_scoring.contribution import (
     align_attribution_matrix,
     compute_contribution_diagnostics,
 )
-from src.audit_scoring.decision_rules import (
+from audit_scoring.decision_rules import (
     DECISION_MATRIX,
     assign_diagnostic_band,
     downgrade_band,
     operational_decision,
 )
-from src.audit_scoring.feature_groups import build_taxonomy, map_feature_name
-from src.audit_scoring.io import assert_not_holdout_path, load_pickle, to_numpy
-from src.audit_scoring.io import technical_indicator_flag_from_path
-from src.audit_scoring.model_mapping import (
+from audit_scoring.feature_groups import build_taxonomy, map_feature_name
+from audit_scoring.io import assert_not_holdout_path, load_pickle, to_numpy
+from audit_scoring.io import technical_indicator_flag_from_path
+from audit_scoring.model_mapping import (
     deduplicate_paths,
     experiment_name_from_filename,
     map_one_pkl,
     normalize_name,
 )
-from src.audit_scoring.necessity import (
+from audit_scoring.necessity import (
     compute_necessity_diagnostics,
     compute_normalized_occlusion_effect,
 )
-from src.audit_scoring.scoring import average_rank, percentile_scores, score_family_medians, score_model_metrics
-from src.audit_scoring.structure import effective_rank_ratio, majority_class_rate, compute_structure_diagnostics
+from audit_scoring.scoring import average_rank, percentile_scores, score_family_medians, score_model_metrics
+from audit_scoring.structure import effective_rank_ratio, majority_class_rate, compute_structure_diagnostics
 
 
 def test_holdout_loading_prohibited(tmp_path: Path):

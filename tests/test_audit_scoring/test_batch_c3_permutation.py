@@ -9,19 +9,19 @@ import pandas as pd
 import pytest
 import torch
 
-from src.audit_scoring.permutation_config import ABOVE_MARKET_FAMILIES, PermutationConfig
-from src.audit_scoring.permutation_operator import (
+from audit_scoring.permutation_config import ABOVE_MARKET_FAMILIES, PermutationConfig
+from audit_scoring.permutation_operator import (
     build_regime_donor_map,
     generate_derangement,
     permute_all_state_families,
     permute_state_families,
     valid_permutation_mask,
 )
-from src.audit_scoring.permutation_validity import (
+from audit_scoring.permutation_validity import (
     combined_permutation_status,
     importance_effect_concordance,
 )
-from src.audit_scoring.validity_guards import SourceAccessLog, assert_permitted_analytical_load
+from audit_scoring.validity_guards import SourceAccessLog, assert_permitted_analytical_load
 
 
 def test_derangement_no_fixed_points():
@@ -138,8 +138,8 @@ def test_incomplete_family_config():
 
 
 def test_topk_and_cardinality_reuse():
-    from src.audit_scoring.baseline_validity import ranking_from_abs_profile, top_k_jaccard
-    from src.audit_scoring.cardinality_controls import (
+    from audit_scoring.baseline_validity import ranking_from_abs_profile, top_k_jaccard
+    from audit_scoring.cardinality_controls import (
         family_raw_cardinality,
         guided_raw_count,
         sample_cardinality_matched_families,

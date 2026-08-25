@@ -12,13 +12,16 @@ from typing import Any, Dict, List, Sequence, Tuple
 
 import pandas as pd
 
-from .config import REPO_ROOT, VALIDATION_END, VALIDATION_START
+from .config import REPO_ROOT, VALIDATION_END, VALIDATION_START, _env_path
 from .holdout_assessment import INCOMPLETE_EVIDENCE_FAMILY
 
 EXPECTED_N_FAMILIES = 18
 MIN_EVALUABLE_FAMILIES = 15
 
-DEFAULT_DIAGNOSTIC_PKL_ROOT = Path(r"C:\git\tesis\results\ablation_ESWA_all_models")
+DEFAULT_DIAGNOSTIC_PKL_ROOT = _env_path(
+    "DECISION_LOGIC_AUDIT_DIAGNOSTIC_PKL_ROOT",
+    REPO_ROOT / "results" / "diagnostics",
+)
 DEFAULT_BATCH_A_DIR = REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_screening"
 DEFAULT_BATCH_B_DIR = REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_holdout"
 DEFAULT_BATCH_B_VERIFICATION_DIR = (
@@ -28,9 +31,13 @@ DEFAULT_OUTPUT_DIR = REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_
 DEFAULT_FAMILY_MAPPING_REPORT = (
     REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_inputs" / "family_mapping_report.csv"
 )
-DEFAULT_MODEL_CODE_ROOT = Path(r"C:\git\DT-DIO-ETSII-UPM")
-DEFAULT_MODEL_ASSESSMENT = Path(
-    r"C:\git\DT-DIO-ETSII-UPM\src\portfolio_optimization\results\ESWA_wHoldout\model_assessment.pkl"
+DEFAULT_MODEL_CODE_ROOT = _env_path(
+    "DECISION_LOGIC_AUDIT_MODEL_CODE_ROOT",
+    REPO_ROOT,
+)
+DEFAULT_MODEL_ASSESSMENT = _env_path(
+    "DECISION_LOGIC_AUDIT_MODEL_ASSESSMENT",
+    REPO_ROOT / "results" / "model_assessment.pkl",
 )
 
 PRIMARY_REGIMES: Tuple[str, ...] = (

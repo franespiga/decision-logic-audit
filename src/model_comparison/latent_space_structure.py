@@ -8,8 +8,6 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.model_selection import cross_val_score, StratifiedKFold, KFold
 from sklearn.metrics import silhouette_score, roc_auc_score, r2_score
 import matplotlib.pyplot as plt
-import sys
-sys.path.append('../..')
 
 # ---- Reuse your provided functions via import or same notebook cell ----
 from regime_representation.transformations import (

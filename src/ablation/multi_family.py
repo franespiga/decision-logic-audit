@@ -285,7 +285,7 @@ def _resolve_sb3_class(algorithm: Optional[str]):
     except ImportError as e:
         raise ImportError(
             "stable-baselines3 is required to load SB3 models. "
-            "Install with: poetry add stable-baselines3"
+            "Install with: pip install stable-baselines3"
         ) from e
 
     mapping = {

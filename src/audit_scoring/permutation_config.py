@@ -36,7 +36,7 @@ IDENTITY_ACTION_TOL = 1e-6
 @dataclass
 class PermutationConfig:
     repository_root: Path = REPO_ROOT
-    diagnostic_pkl_root: Path = Path(r"C:\git\tesis\results\ablation_ESWA_all_models")
+    diagnostic_pkl_root: Path = REPO_ROOT / "results" / "diagnostics"
     batch_a_dir: Path = REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_screening"
     batch_b_dir: Path = REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_holdout"
     batch_c_dir: Path = REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_validity"
@@ -50,7 +50,7 @@ class PermutationConfig:
     family_mapping_report: Path = (
         REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_inputs" / "family_mapping_report.csv"
     )
-    model_code_root: Path = Path(r"C:\git\DT-DIO-ETSII-UPM")
+    model_code_root: Path = REPO_ROOT
     output_dir: Path = REPO_ROOT / "results" / "mendeley" / "dt_metrics" / "audit_validity_permutation"
     validation_start: pd.Timestamp = VALIDATION_START
     validation_end: pd.Timestamp = VALIDATION_END

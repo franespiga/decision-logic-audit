@@ -14,7 +14,7 @@ from .permutation_pipeline import run_batch_c3
 def build_parser() -> argparse.ArgumentParser:
     d = PermutationConfig()
     p = argparse.ArgumentParser(
-        prog="poetry run python -m src.audit_scoring.permutation_cli",
+        prog="python -m audit_scoring.permutation_cli",
         description="Batch C3 input-permutation validity overlay. Does not modify Batches A/B/C/C2.",
     )
     p.add_argument("--repository-root", type=Path, default=d.repository_root)

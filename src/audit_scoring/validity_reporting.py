@@ -626,7 +626,7 @@ def write_final_report(
         "",
         "## 16. Exact reproduction command",
         "```",
-        "python -m src.audit_scoring.validity_cli \\",
+        "python -m audit_scoring.validity_cli \\",
         f'  --repository-root "{cfg.repository_root}" \\',
         f'  --diagnostic-pkl-root "{cfg.diagnostic_pkl_root}" \\',
         f'  --batch-a-dir "{cfg.batch_a_dir}" \\',

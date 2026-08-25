@@ -10,7 +10,7 @@ import pytest
 import torch
 import torch.nn as nn
 
-from src.audit_scoring.baseline_validity import (
+from audit_scoring.baseline_validity import (
     build_empirical_median_baseline,
     build_zero_baseline,
     classify_baseline_status,
@@ -18,22 +18,22 @@ from src.audit_scoring.baseline_validity import (
     signed_agreement,
     top_k_jaccard,
 )
-from src.audit_scoring.checkpoint_loading import (
+from audit_scoring.checkpoint_loading import (
     allocation_distance,
     cash_and_risky_deltas,
     total_variation_distance,
 )
-from src.audit_scoring.faithfulness_validity import (
+from audit_scoring.faithfulness_validity import (
     classify_faithfulness,
     paired_bootstrap_ci,
     replace_families_with_baseline,
     restore_families_from_original,
 )
-from src.audit_scoring.randomization_validity import classify_randomization_status
-from src.audit_scoring.validation_sampling import assert_validation_dates, stratified_sample_indices
-from src.audit_scoring.validity_aggregation import combined_validity_status
-from src.audit_scoring.validity_guards import SourceAccessLog, assert_permitted_analytical_load
-from src.audit_scoring.holdout_assessment import INCOMPLETE_EVIDENCE_FAMILY
+from audit_scoring.randomization_validity import classify_randomization_status
+from audit_scoring.validation_sampling import assert_validation_dates, stratified_sample_indices
+from audit_scoring.validity_aggregation import combined_validity_status
+from audit_scoring.validity_guards import SourceAccessLog, assert_permitted_analytical_load
+from audit_scoring.holdout_assessment import INCOMPLETE_EVIDENCE_FAMILY
 
 
 def test_validation_date_filtering():

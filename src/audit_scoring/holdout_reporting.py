@@ -1142,7 +1142,7 @@ def run_batch_b(
         coverage=coverage,
     )
     command = (
-        "python -m src.audit_scoring.holdout_cli "
+        "python -m audit_scoring.holdout_cli "
         f'--batch-a-dir "{batch_a_dir}" '
         f'--metrics-dir "{metrics_dir}" '
         f'--output-dir "{output_dir}" '

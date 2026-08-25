@@ -13,7 +13,7 @@ from .targeted_validity_pipeline import TargetedConfig, run_batch_c2
 def build_parser() -> argparse.ArgumentParser:
     d = TargetedConfig()
     p = argparse.ArgumentParser(
-        prog="poetry run python -m src.audit_scoring.targeted_validity_cli",
+        prog="python -m audit_scoring.targeted_validity_cli",
         description="Batch C2 targeted validity overlay. Does not modify Batch A/B/C artefacts.",
     )
     p.add_argument("--repository-root", type=Path, default=d.repository_root)

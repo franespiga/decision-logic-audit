@@ -69,22 +69,22 @@ MANDATORY_FAMILY_DEFAULT = "max_quadratic_utility_TI_True"
 
 @dataclass
 class TargetedConfig:
-    repository_root: Path = Path(r"C:\git\tesis\DT_ABLATION_RISK")
-    diagnostic_pkl_root: Path = Path(r"C:\git\tesis\results\ablation_ESWA_all_models")
-    batch_a_dir: Path = Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_screening")
-    batch_b_dir: Path = Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_holdout")
-    batch_c_dir: Path = Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_validity")
-    batch_c_verification_dir: Path = Path(
-        r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_validity_verification"
+    repository_root: Path = Path(__file__).resolve().parents[2]
+    diagnostic_pkl_root: Path = repository_root / "results" / "diagnostics"
+    batch_a_dir: Path = repository_root / "results" / "mendeley" / "dt_metrics" / "audit_screening"
+    batch_b_dir: Path = repository_root / "results" / "mendeley" / "dt_metrics" / "audit_holdout"
+    batch_c_dir: Path = repository_root / "results" / "mendeley" / "dt_metrics" / "audit_validity"
+    batch_c_verification_dir: Path = (
+        repository_root / "results" / "mendeley" / "dt_metrics" / "audit_validity_verification"
     )
-    metrics_dir: Path = Path(r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics")
-    output_dir: Path = Path(
-        r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_validity_targeted"
+    metrics_dir: Path = repository_root / "results" / "mendeley" / "dt_metrics"
+    output_dir: Path = (
+        repository_root / "results" / "mendeley" / "dt_metrics" / "audit_validity_targeted"
     )
-    family_mapping_report: Path = Path(
-        r"C:\git\tesis\DT_ABLATION_RISK\results\mendeley\dt_metrics\audit_inputs\family_mapping_report.csv"
+    family_mapping_report: Path = (
+        repository_root / "results" / "mendeley" / "dt_metrics" / "audit_inputs" / "family_mapping_report.csv"
     )
-    model_code_root: Path = Path(r"C:\git\DT-DIO-ETSII-UPM")
+    model_code_root: Path = repository_root
     mandatory_full_family: str = MANDATORY_FAMILY_DEFAULT
     primary_cost_bps: int = 5
     validation_start: pd.Timestamp = pd.Timestamp("2016-01-01")

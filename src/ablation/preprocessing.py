@@ -2,8 +2,6 @@ import torch
 import numpy as np
 import pandas as pd
 from typing import Dict, List, Optional, Tuple, Union
-import sys
-sys.path.append("../../")
 
 
 def compute_OHLC_returns(df_ohlc: pd.DataFrame) -> tuple:

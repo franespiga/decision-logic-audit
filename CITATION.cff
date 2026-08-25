@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+title: decision-logic-audit
+message: Please cite the accepted ESWA article and this software version.
+type: software
+version: 1.0.0
+license: GPL-3.0-only
+authors:
+  - family-names: Espiga-Fernández
+    given-names: Francisco
+    email: francisco.espiga.fernandez@alumnos.upm.es
+    affiliation: Universidad Politécnica de Madrid
+  - family-names: Ordieres-Meré
+    given-names: Joaquín
+    affiliation: Universidad Politécnica de Madrid
+  - family-names: García-Sánchez
+    given-names: Álvaro
+    affiliation: Universidad Politécnica de Madrid
+keywords:
+  - decision transformer
+  - portfolio allocation
+  - explainability
+  - model audit
+preferred-citation:
+  type: article
+  title: "A Diagnostic Framework for Auditing Decision Logic in Transformer-Based Portfolio Allocation"
+  authors:
+    - family-names: Espiga-Fernández
+      given-names: Francisco
+    - family-names: Ordieres-Meré
+      given-names: Joaquín
+    - family-names: García-Sánchez
+      given-names: Álvaro
+  journal: Expert Systems with Applications
+  year: 2026
+  notes: Accepted manuscript. Article DOI omitted until assigned.

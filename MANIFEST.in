@@ -1,0 +1,15 @@
+include LICENSE
+include README.md
+include FIXTURES.md
+include CITATION.cff
+include CONTRIBUTING.md
+include THIRD_PARTY_NOTICES.md
+include Makefile
+graft fixtures
+graft config
+graft tests
+recursive-include src/decision_logic_audit/data *
+global-exclude *.h5 *.safetensors *.zip *.pkl *.pyc
+prune outputs
+prune build
+prune dist

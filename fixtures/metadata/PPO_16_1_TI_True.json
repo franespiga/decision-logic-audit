@@ -1,0 +1,1 @@
+{"cash_instrument": true, "instruments": ["^GSPC", "^GDAXI", "^IXIC", "^RUT", "^N225", "^FTSE"], "technical_indicators": ["RSI", "AROONOSC", "CCI", "CMO", "MFI", "STOCHF", "WILLR", "NATR"], "agent_algorithm": "PPO", "feature_extractor": "MLP", "lookback": 16, "rebalance_every": 1, "timesteps": 10000000}

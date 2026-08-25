@@ -368,7 +368,7 @@ def write_batch_a_report(
         "## Exact reproduction command",
         "",
         "```powershell",
-        "python -m src.audit_scoring.cli `",
+        "python -m audit_scoring.cli `",
         f'  --diagnostic-pkl-root "{config.diagnostic_pkl_root}" `',
         f'  --metrics-dir "{config.metrics_dir}" `',
         f'  --model-assessment-pickle "{config.model_assessment_pickle}" `',

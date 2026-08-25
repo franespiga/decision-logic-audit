@@ -16,6 +16,8 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 import pandas as pd
 
+from .config import REPO_ROOT
+
 LOGGER = logging.getLogger("audit_scoring.holdout_assessment")
 
 INCOMPLETE_EVIDENCE_FAMILY = "no_techindi_full_TI_False"
@@ -106,9 +108,11 @@ def verify_batch_a_freeze(
     """Verify Batch A artefact hashes and frozen decision properties before holdout load."""
     batch_a_dir = Path(batch_a_dir)
     repo_root = Path(repo_root) if repo_root else batch_a_dir.parents[3] if len(batch_a_dir.parts) > 3 else Path.cwd()
-    # Prefer repository root containing src/
-    for candidate in [Path(r"C:\git\tesis\DT_ABLATION_RISK"), batch_a_dir.parent.parent.parent.parent]:
-        if (candidate / "src" / "audit_scoring").exists():
+    # Prefer a repository root that contains the audit_scoring package.
+    for candidate in [repo_root, REPO_ROOT, batch_a_dir.parent.parent.parent.parent]:
+        if (candidate / "src" / "audit_scoring").exists() or (
+            candidate / "audit_scoring"
+        ).exists():
             repo_root = candidate
             break
 

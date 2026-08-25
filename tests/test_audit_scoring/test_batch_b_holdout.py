@@ -10,17 +10,17 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.audit_scoring.case_analysis import classify_cases
-from src.audit_scoring.concordance import pairwise_concordance
-from src.audit_scoring.enrichment import category_summary, top_bottom_coverage
-from src.audit_scoring.holdout_assessment import (
+from audit_scoring.case_analysis import classify_cases
+from audit_scoring.concordance import pairwise_concordance
+from audit_scoring.enrichment import category_summary, top_bottom_coverage
+from audit_scoring.holdout_assessment import (
     INCOMPLETE_EVIDENCE_FAMILY,
     assert_allowed_holdout_path,
     parse_family_design_factors,
     sha256_file,
     verify_batch_a_freeze,
 )
-from src.audit_scoring.neighbour_analysis import (
+from audit_scoring.neighbour_analysis import (
     build_neighbour_candidates,
     hamming_distance,
     select_neighbour_pairs,
@@ -253,7 +253,7 @@ def test_design_factor_parse():
 
 
 def test_no_batch_a_recalibration_in_cli_defaults():
-    from src.audit_scoring.holdout_cli import build_parser
+    from audit_scoring.holdout_cli import build_parser
 
     p = build_parser()
     args = p.parse_args([])

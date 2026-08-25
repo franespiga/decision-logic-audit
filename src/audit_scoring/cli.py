@@ -14,7 +14,7 @@ from .io import read_table
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="python -m src.audit_scoring.cli",
+        prog="python -m audit_scoring.cli",
         description=(
             "Batch A validation-calibrated contribution–necessity–structure "
             "audit scoring. Does not load holdout metrics and does not claim "
