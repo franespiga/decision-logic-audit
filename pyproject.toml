@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "dt-ablation-risk"
+version = "0.1.0"
+description = ""
+authors = ["franespiga <francisco.espiga.fernandez@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.12, <3.13"
+h5py = "^3.12.1"
+pandas = "^2.2.3"
+tqdm = "^4.66.5"
+numpy = "<2.0.0"
+pyportfolioopt = "^1.5.5"
+gymnasium = "^1.0.0"
+pyfolio-reloaded = "0.9.5"
+tables = "^3.10.1"
+transformers = {extras = ["torch"], version = "^4.45.2"} #4.40.1
+datasets = "^3.0.1" #2.19.0
+ipython = "^8.28.0"
+jupyter = "^1.1.1"
+numba = "^0.60.0"
+torchvision = {version = "^0.20.1+cu124", source = "pytorch_gpu"}
+torch = {version = "^2.5.1+cu124", source = "pytorch_gpu"}
+xgboost = "^2.1.4"
+shap = "^0.46.0"
+statsmodels = "^0.14.4"
+seaborn = "^0.13.2"
+captum = "^0.7.0"
+matplotlib = "^3.10.1"
+notebook = "^7.3.3"
+stable-baselines3 = "^2.4.0"
+ipykernel = "^7.3.0"
+
+
+[[tool.poetry.source]]
+name = "pytorch-gpu"
+url = "https://download.pytorch.org/whl/cu117"
+priority = "explicit"
+
+
+[[tool.poetry.source]]
+name = "pytorch_gpu"
+url = "https://download.pytorch.org/whl/cu124"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

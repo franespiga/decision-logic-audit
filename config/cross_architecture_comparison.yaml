@@ -1,0 +1,939 @@
+meta:
+  schema_version: 1.0.0
+  generated_utc: '2026-07-25T07:13:58.911613+00:00'
+  generator: scripts/run_cross_architecture_comparison.py
+  dt_model_dir: models/comparison/dt
+  rl_model_dir: models/comparison/rl
+  data_path: models\comparison\dt\DT_16_10\data.h5
+  data_md5_first_8mb: 577845c19eccd0852707e57a9c777823
+  period: eval
+  period_range:
+  - '2016-01-01'
+  - '2024-04-30'
+  seed: 42
+  regime_configuration:
+    bull_market:
+    - '2016-01-01'
+    - '2020-02-14'
+    crash_period:
+    - '2020-02-15'
+    - '2020-05-31'
+    recovery_growth:
+    - '2020-06-01'
+    - '2021-12-31'
+    sideways_uncertain:
+    - '2022-01-01'
+    - '2024-04-30'
+  transaction_cost_one_way: 0.002
+inclusion_criteria:
+- 'loadable: the checkpoint can be deserialised with its declared framework'
+- 'metadata: a metadata.json declaring instruments and either env_state or technical_indicators is present
+  next to the checkpoint'
+- 'universe: the action space maps onto the common seven-element instrument universe (six equity indices
+  plus CASH)'
+- 'features: every declared observation column exists in the frozen market data file'
+- 'coverage: at least 95% of the common evaluation dates can be built into a complete observation window'
+- 'mapping: a deterministic action-to-portfolio-weight mapping is defined for the declared action space'
+canonical_instruments:
+- ^GSPC
+- ^GDAXI
+- ^IXIC
+- ^RUT
+- ^N225
+- ^FTSE
+- CASH
+models:
+- model_id: DT_16_10
+  family: DT
+  algorithm: DecisionTransformer
+  checkpoint_path: models\comparison\dt\DT_16_10\out\RL_AG_DT_refdate_2016-01-01_20250108_1855\model
+  metadata_path: models\comparison\dt\DT_16_10\out\RL_AG_DT_refdate_2016-01-01_20250108_1855\metadata.json
+  data_path: models\comparison\dt\DT_16_10\data.h5
+  preprocessing_path: null
+  environment_path: null
+  feature_extractor: Transformer
+  state_features:
+  - - ^FTSE
+    - RSI
+  - - ^FTSE
+    - AROONOSC
+  - - ^FTSE
+    - CCI
+  - - ^FTSE
+    - CMO
+  - - ^FTSE
+    - MFI
+  - - ^FTSE
+    - WILLR
+  - - ^FTSE
+    - NATR
+  - - ^GDAXI
+    - RSI
+  - - ^GDAXI
+    - AROONOSC
+  - - ^GDAXI
+    - CCI
+  - - ^GDAXI
+    - CMO
+  - - ^GDAXI
+    - MFI
+  - - ^GDAXI
+    - WILLR
+  - - ^GDAXI
+    - NATR
+  - - ^N225
+    - RSI
+  - - ^N225
+    - AROONOSC
+  - - ^N225
+    - CCI
+  - - ^N225
+    - CMO
+  - - ^N225
+    - MFI
+  - - ^N225
+    - WILLR
+  - - ^N225
+    - NATR
+  - - ^IXIC
+    - RSI
+  - - ^IXIC
+    - AROONOSC
+  - - ^IXIC
+    - CCI
+  - - ^IXIC
+    - CMO
+  - - ^IXIC
+    - MFI
+  - - ^IXIC
+    - WILLR
+  - - ^IXIC
+    - NATR
+  - - ^RUT
+    - RSI
+  - - ^RUT
+    - AROONOSC
+  - - ^RUT
+    - CCI
+  - - ^RUT
+    - CMO
+  - - ^RUT
+    - MFI
+  - - ^RUT
+    - WILLR
+  - - ^RUT
+    - NATR
+  - - ^GSPC
+    - RSI
+  - - ^GSPC
+    - AROONOSC
+  - - ^GSPC
+    - CCI
+  - - ^GSPC
+    - CMO
+  - - ^GSPC
+    - MFI
+  - - ^GSPC
+    - WILLR
+  - - ^GSPC
+    - NATR
+  - - ^RUT
+    - Open
+  - - ^RUT
+    - High
+  - - ^RUT
+    - Low
+  - - ^RUT
+    - Close
+  - - ^GDAXI
+    - Open
+  - - ^GDAXI
+    - High
+  - - ^GDAXI
+    - Low
+  - - ^GDAXI
+    - Close
+  - - ^N225
+    - Open
+  - - ^N225
+    - High
+  - - ^N225
+    - Low
+  - - ^N225
+    - Close
+  - - ^IXIC
+    - Open
+  - - ^IXIC
+    - High
+  - - ^IXIC
+    - Low
+  - - ^IXIC
+    - Close
+  - - ^FTSE
+    - Open
+  - - ^FTSE
+    - High
+  - - ^FTSE
+    - Low
+  - - ^FTSE
+    - Close
+  - - ^GSPC
+    - Open
+  - - ^GSPC
+    - High
+  - - ^GSPC
+    - Low
+  - - ^GSPC
+    - Close
+  lookback: 16
+  window_length: 17
+  action_space: continuous
+  n_actions: 7
+  instruments:
+  - ^RUT
+  - ^GDAXI
+  - ^N225
+  - ^IXIC
+  - ^FTSE
+  - ^GSPC
+  - CASH
+  reference_date: '2016-01-01'
+  rebalancing_frequency: 1
+  target_return: 0.125
+  weights_source: reconstructed
+  performance_source: reconstructed
+  legacy_weights_path: null
+  state_dim: 1122
+  inclusion_status: included
+  exclusion_reason: null
+  notes:
+  - strategy=efficient_risk
+- model_id: DT_max_quadratic_utility
+  family: DT
+  algorithm: DecisionTransformer
+  checkpoint_path: models\comparison\dt\max_quadratic_utility\out\RL_AG_DT_refdate_2016-01-01_20250102_1040\model
+  metadata_path: models\comparison\dt\max_quadratic_utility\out\RL_AG_DT_refdate_2016-01-01_20250102_1040\metadata.json
+  data_path: models\comparison\dt\max_quadratic_utility\data.h5
+  preprocessing_path: null
+  environment_path: null
+  feature_extractor: Transformer
+  state_features:
+  - - ^FTSE
+    - RSI
+  - - ^FTSE
+    - AROONOSC
+  - - ^FTSE
+    - CCI
+  - - ^FTSE
+    - CMO
+  - - ^FTSE
+    - MFI
+  - - ^FTSE
+    - WILLR
+  - - ^FTSE
+    - NATR
+  - - ^GDAXI
+    - RSI
+  - - ^GDAXI
+    - AROONOSC
+  - - ^GDAXI
+    - CCI
+  - - ^GDAXI
+    - CMO
+  - - ^GDAXI
+    - MFI
+  - - ^GDAXI
+    - WILLR
+  - - ^GDAXI
+    - NATR
+  - - ^N225
+    - RSI
+  - - ^N225
+    - AROONOSC
+  - - ^N225
+    - CCI
+  - - ^N225
+    - CMO
+  - - ^N225
+    - MFI
+  - - ^N225
+    - WILLR
+  - - ^N225
+    - NATR
+  - - ^IXIC
+    - RSI
+  - - ^IXIC
+    - AROONOSC
+  - - ^IXIC
+    - CCI
+  - - ^IXIC
+    - CMO
+  - - ^IXIC
+    - MFI
+  - - ^IXIC
+    - WILLR
+  - - ^IXIC
+    - NATR
+  - - ^RUT
+    - RSI
+  - - ^RUT
+    - AROONOSC
+  - - ^RUT
+    - CCI
+  - - ^RUT
+    - CMO
+  - - ^RUT
+    - MFI
+  - - ^RUT
+    - WILLR
+  - - ^RUT
+    - NATR
+  - - ^GSPC
+    - RSI
+  - - ^GSPC
+    - AROONOSC
+  - - ^GSPC
+    - CCI
+  - - ^GSPC
+    - CMO
+  - - ^GSPC
+    - MFI
+  - - ^GSPC
+    - WILLR
+  - - ^GSPC
+    - NATR
+  - - ^RUT
+    - Open
+  - - ^RUT
+    - High
+  - - ^RUT
+    - Low
+  - - ^RUT
+    - Close
+  - - ^GDAXI
+    - Open
+  - - ^GDAXI
+    - High
+  - - ^GDAXI
+    - Low
+  - - ^GDAXI
+    - Close
+  - - ^N225
+    - Open
+  - - ^N225
+    - High
+  - - ^N225
+    - Low
+  - - ^N225
+    - Close
+  - - ^IXIC
+    - Open
+  - - ^IXIC
+    - High
+  - - ^IXIC
+    - Low
+  - - ^IXIC
+    - Close
+  - - ^FTSE
+    - Open
+  - - ^FTSE
+    - High
+  - - ^FTSE
+    - Low
+  - - ^FTSE
+    - Close
+  - - ^GSPC
+    - Open
+  - - ^GSPC
+    - High
+  - - ^GSPC
+    - Low
+  - - ^GSPC
+    - Close
+  lookback: 16
+  window_length: 17
+  action_space: continuous
+  n_actions: 7
+  instruments:
+  - ^RUT
+  - ^GDAXI
+  - ^N225
+  - ^IXIC
+  - ^FTSE
+  - ^GSPC
+  - CASH
+  reference_date: '2016-01-01'
+  rebalancing_frequency: 1
+  target_return: 0.125
+  weights_source: reconstructed
+  performance_source: reconstructed
+  legacy_weights_path: null
+  state_dim: 1122
+  inclusion_status: included
+  exclusion_reason: null
+  notes:
+  - strategy=max_quadratic_utility
+- model_id: RL_DDPG_LB28
+  family: RL
+  algorithm: DDPG
+  checkpoint_path: models\comparison\rl\RL_AG_DDPG_FT_MLP_LB_28_RE_1_refdate_2016-01-01_20240511_2203\best_model.zip
+  metadata_path: models\comparison\rl\RL_AG_DDPG_FT_MLP_LB_28_RE_1_refdate_2016-01-01_20240511_2203\metadata.json
+  data_path: models\comparison\dt\DT_16_10\data.h5
+  preprocessing_path: null
+  environment_path: null
+  feature_extractor: MLP
+  state_features:
+  - - ^FTSE
+    - RSI
+  - - ^FTSE
+    - AROONOSC
+  - - ^FTSE
+    - CCI
+  - - ^FTSE
+    - CMO
+  - - ^FTSE
+    - MFI
+  - - ^FTSE
+    - WILLR
+  - - ^FTSE
+    - NATR
+  - - ^GDAXI
+    - RSI
+  - - ^GDAXI
+    - AROONOSC
+  - - ^GDAXI
+    - CCI
+  - - ^GDAXI
+    - CMO
+  - - ^GDAXI
+    - MFI
+  - - ^GDAXI
+    - WILLR
+  - - ^GDAXI
+    - NATR
+  - - ^N225
+    - RSI
+  - - ^N225
+    - AROONOSC
+  - - ^N225
+    - CCI
+  - - ^N225
+    - CMO
+  - - ^N225
+    - MFI
+  - - ^N225
+    - WILLR
+  - - ^N225
+    - NATR
+  - - ^IXIC
+    - RSI
+  - - ^IXIC
+    - AROONOSC
+  - - ^IXIC
+    - CCI
+  - - ^IXIC
+    - CMO
+  - - ^IXIC
+    - MFI
+  - - ^IXIC
+    - WILLR
+  - - ^IXIC
+    - NATR
+  - - ^RUT
+    - RSI
+  - - ^RUT
+    - AROONOSC
+  - - ^RUT
+    - CCI
+  - - ^RUT
+    - CMO
+  - - ^RUT
+    - MFI
+  - - ^RUT
+    - WILLR
+  - - ^RUT
+    - NATR
+  - - ^GSPC
+    - RSI
+  - - ^GSPC
+    - AROONOSC
+  - - ^GSPC
+    - CCI
+  - - ^GSPC
+    - CMO
+  - - ^GSPC
+    - MFI
+  - - ^GSPC
+    - WILLR
+  - - ^GSPC
+    - NATR
+  - - ^RUT
+    - Open
+  - - ^RUT
+    - High
+  - - ^RUT
+    - Low
+  - - ^RUT
+    - Close
+  - - ^RUT
+    - Volume
+  - - ^GDAXI
+    - Open
+  - - ^GDAXI
+    - High
+  - - ^GDAXI
+    - Low
+  - - ^GDAXI
+    - Close
+  - - ^GDAXI
+    - Volume
+  - - ^N225
+    - Open
+  - - ^N225
+    - High
+  - - ^N225
+    - Low
+  - - ^N225
+    - Close
+  - - ^N225
+    - Volume
+  - - ^IXIC
+    - Open
+  - - ^IXIC
+    - High
+  - - ^IXIC
+    - Low
+  - - ^IXIC
+    - Close
+  - - ^IXIC
+    - Volume
+  - - ^FTSE
+    - Open
+  - - ^FTSE
+    - High
+  - - ^FTSE
+    - Low
+  - - ^FTSE
+    - Close
+  - - ^FTSE
+    - Volume
+  - - ^GSPC
+    - Open
+  - - ^GSPC
+    - High
+  - - ^GSPC
+    - Low
+  - - ^GSPC
+    - Close
+  - - ^GSPC
+    - Volume
+  - - CASH
+    - Open
+  - - CASH
+    - High
+  - - CASH
+    - Low
+  - - CASH
+    - Close
+  - - CASH
+    - Volume
+  lookback: 28
+  window_length: 28
+  action_space: continuous
+  n_actions: 7
+  instruments:
+  - ^GSPC
+  - ^GDAXI
+  - ^IXIC
+  - ^RUT
+  - ^N225
+  - ^FTSE
+  - CASH
+  reference_date: '2016-01-01'
+  rebalancing_frequency: 1
+  target_return: null
+  weights_source: reconstructed
+  performance_source: reconstructed
+  legacy_weights_path: models\comparison\rl\RL_AG_DDPG_FT_MLP_LB_28_RE_1_refdate_2016-01-01_20240511_2203\results\weights_BEST.csv
+  state_dim: null
+  inclusion_status: included
+  exclusion_reason: null
+  notes:
+  - action index order taken from metadata.instruments (+CASH); the legacy weights_BEST.csv column labels
+    disagree with this order and are not treated as authoritative
+- model_id: RL_DQN_LB28
+  family: RL
+  algorithm: DQN
+  checkpoint_path: models\comparison\rl\RL_AG_DQN_FT_MLP_LB_28_RE_1_refdate_2016-01-01_20240511_2202\best_model.zip
+  metadata_path: models\comparison\rl\RL_AG_DQN_FT_MLP_LB_28_RE_1_refdate_2016-01-01_20240511_2202\metadata.json
+  data_path: models\comparison\dt\DT_16_10\data.h5
+  preprocessing_path: null
+  environment_path: null
+  feature_extractor: MLP
+  state_features:
+  - - ^FTSE
+    - RSI
+  - - ^FTSE
+    - AROONOSC
+  - - ^FTSE
+    - CCI
+  - - ^FTSE
+    - CMO
+  - - ^FTSE
+    - MFI
+  - - ^FTSE
+    - WILLR
+  - - ^FTSE
+    - NATR
+  - - ^GDAXI
+    - RSI
+  - - ^GDAXI
+    - AROONOSC
+  - - ^GDAXI
+    - CCI
+  - - ^GDAXI
+    - CMO
+  - - ^GDAXI
+    - MFI
+  - - ^GDAXI
+    - WILLR
+  - - ^GDAXI
+    - NATR
+  - - ^N225
+    - RSI
+  - - ^N225
+    - AROONOSC
+  - - ^N225
+    - CCI
+  - - ^N225
+    - CMO
+  - - ^N225
+    - MFI
+  - - ^N225
+    - WILLR
+  - - ^N225
+    - NATR
+  - - ^IXIC
+    - RSI
+  - - ^IXIC
+    - AROONOSC
+  - - ^IXIC
+    - CCI
+  - - ^IXIC
+    - CMO
+  - - ^IXIC
+    - MFI
+  - - ^IXIC
+    - WILLR
+  - - ^IXIC
+    - NATR
+  - - ^RUT
+    - RSI
+  - - ^RUT
+    - AROONOSC
+  - - ^RUT
+    - CCI
+  - - ^RUT
+    - CMO
+  - - ^RUT
+    - MFI
+  - - ^RUT
+    - WILLR
+  - - ^RUT
+    - NATR
+  - - ^GSPC
+    - RSI
+  - - ^GSPC
+    - AROONOSC
+  - - ^GSPC
+    - CCI
+  - - ^GSPC
+    - CMO
+  - - ^GSPC
+    - MFI
+  - - ^GSPC
+    - WILLR
+  - - ^GSPC
+    - NATR
+  - - ^RUT
+    - Open
+  - - ^RUT
+    - High
+  - - ^RUT
+    - Low
+  - - ^RUT
+    - Close
+  - - ^RUT
+    - Volume
+  - - ^GDAXI
+    - Open
+  - - ^GDAXI
+    - High
+  - - ^GDAXI
+    - Low
+  - - ^GDAXI
+    - Close
+  - - ^GDAXI
+    - Volume
+  - - ^N225
+    - Open
+  - - ^N225
+    - High
+  - - ^N225
+    - Low
+  - - ^N225
+    - Close
+  - - ^N225
+    - Volume
+  - - ^IXIC
+    - Open
+  - - ^IXIC
+    - High
+  - - ^IXIC
+    - Low
+  - - ^IXIC
+    - Close
+  - - ^IXIC
+    - Volume
+  - - ^FTSE
+    - Open
+  - - ^FTSE
+    - High
+  - - ^FTSE
+    - Low
+  - - ^FTSE
+    - Close
+  - - ^FTSE
+    - Volume
+  - - ^GSPC
+    - Open
+  - - ^GSPC
+    - High
+  - - ^GSPC
+    - Low
+  - - ^GSPC
+    - Close
+  - - ^GSPC
+    - Volume
+  - - CASH
+    - Open
+  - - CASH
+    - High
+  - - CASH
+    - Low
+  - - CASH
+    - Close
+  - - CASH
+    - Volume
+  lookback: 28
+  window_length: 28
+  action_space: discrete
+  n_actions: 7
+  instruments:
+  - ^GSPC
+  - ^GDAXI
+  - ^IXIC
+  - ^RUT
+  - ^N225
+  - ^FTSE
+  - CASH
+  reference_date: '2016-01-01'
+  rebalancing_frequency: 1
+  target_return: null
+  weights_source: reconstructed
+  performance_source: reconstructed
+  legacy_weights_path: models\comparison\rl\RL_AG_DQN_FT_MLP_LB_28_RE_1_refdate_2016-01-01_20240511_2202\results\weights_BEST.csv
+  state_dim: null
+  inclusion_status: included
+  exclusion_reason: null
+  notes:
+  - action index order taken from metadata.instruments (+CASH); the legacy weights_BEST.csv column labels
+    disagree with this order and are not treated as authoritative
+- model_id: RL_PPO_LB16
+  family: RL
+  algorithm: PPO
+  checkpoint_path: models\comparison\rl\RL_AG_PPO_FT_MLP_LB_16_RE_1_refdate_2016-01-01_20240510_0841\best_model.zip
+  metadata_path: models\comparison\rl\RL_AG_PPO_FT_MLP_LB_16_RE_1_refdate_2016-01-01_20240510_0841\metadata.json
+  data_path: models\comparison\dt\DT_16_10\data.h5
+  preprocessing_path: null
+  environment_path: null
+  feature_extractor: MLP
+  state_features:
+  - - ^FTSE
+    - RSI
+  - - ^FTSE
+    - AROONOSC
+  - - ^FTSE
+    - CCI
+  - - ^FTSE
+    - CMO
+  - - ^FTSE
+    - MFI
+  - - ^FTSE
+    - WILLR
+  - - ^FTSE
+    - NATR
+  - - ^GDAXI
+    - RSI
+  - - ^GDAXI
+    - AROONOSC
+  - - ^GDAXI
+    - CCI
+  - - ^GDAXI
+    - CMO
+  - - ^GDAXI
+    - MFI
+  - - ^GDAXI
+    - WILLR
+  - - ^GDAXI
+    - NATR
+  - - ^N225
+    - RSI
+  - - ^N225
+    - AROONOSC
+  - - ^N225
+    - CCI
+  - - ^N225
+    - CMO
+  - - ^N225
+    - MFI
+  - - ^N225
+    - WILLR
+  - - ^N225
+    - NATR
+  - - ^IXIC
+    - RSI
+  - - ^IXIC
+    - AROONOSC
+  - - ^IXIC
+    - CCI
+  - - ^IXIC
+    - CMO
+  - - ^IXIC
+    - MFI
+  - - ^IXIC
+    - WILLR
+  - - ^IXIC
+    - NATR
+  - - ^RUT
+    - RSI
+  - - ^RUT
+    - AROONOSC
+  - - ^RUT
+    - CCI
+  - - ^RUT
+    - CMO
+  - - ^RUT
+    - MFI
+  - - ^RUT
+    - WILLR
+  - - ^RUT
+    - NATR
+  - - ^GSPC
+    - RSI
+  - - ^GSPC
+    - AROONOSC
+  - - ^GSPC
+    - CCI
+  - - ^GSPC
+    - CMO
+  - - ^GSPC
+    - MFI
+  - - ^GSPC
+    - WILLR
+  - - ^GSPC
+    - NATR
+  - - ^RUT
+    - Open
+  - - ^RUT
+    - High
+  - - ^RUT
+    - Low
+  - - ^RUT
+    - Close
+  - - ^RUT
+    - Volume
+  - - ^GDAXI
+    - Open
+  - - ^GDAXI
+    - High
+  - - ^GDAXI
+    - Low
+  - - ^GDAXI
+    - Close
+  - - ^GDAXI
+    - Volume
+  - - ^N225
+    - Open
+  - - ^N225
+    - High
+  - - ^N225
+    - Low
+  - - ^N225
+    - Close
+  - - ^N225
+    - Volume
+  - - ^IXIC
+    - Open
+  - - ^IXIC
+    - High
+  - - ^IXIC
+    - Low
+  - - ^IXIC
+    - Close
+  - - ^IXIC
+    - Volume
+  - - ^FTSE
+    - Open
+  - - ^FTSE
+    - High
+  - - ^FTSE
+    - Low
+  - - ^FTSE
+    - Close
+  - - ^FTSE
+    - Volume
+  - - ^GSPC
+    - Open
+  - - ^GSPC
+    - High
+  - - ^GSPC
+    - Low
+  - - ^GSPC
+    - Close
+  - - ^GSPC
+    - Volume
+  - - CASH
+    - Open
+  - - CASH
+    - High
+  - - CASH
+    - Low
+  - - CASH
+    - Close
+  - - CASH
+    - Volume
+  lookback: 16
+  window_length: 16
+  action_space: discrete
+  n_actions: 7
+  instruments:
+  - ^GSPC
+  - ^GDAXI
+  - ^IXIC
+  - ^RUT
+  - ^N225
+  - ^FTSE
+  - CASH
+  reference_date: '2016-01-01'
+  rebalancing_frequency: 1
+  target_return: null
+  weights_source: reconstructed
+  performance_source: reconstructed
+  legacy_weights_path: models\comparison\rl\RL_AG_PPO_FT_MLP_LB_16_RE_1_refdate_2016-01-01_20240510_0841\results\weights_BEST.csv
+  state_dim: null
+  inclusion_status: included
+  exclusion_reason: null
+  notes:
+  - action index order taken from metadata.instruments (+CASH); the legacy weights_BEST.csv column labels
+    disagree with this order and are not treated as authoritative
