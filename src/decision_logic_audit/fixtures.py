@@ -19,7 +19,9 @@ import yaml
 from .paths import cache_version_root, repository_root
 
 FIGSHARE_API = "https://api.figshare.com/v2/articles/{article_id}"
+FIGSHARE_DOI_PREFIX = "10.6084/m9.figshare."
 CHUNK_SIZE = 1024 * 1024
+_EMBARGO_HTTP_CODES = {401, 403, 404}
 
 
 class FixtureError(RuntimeError):
@@ -35,6 +37,7 @@ class FixtureSpec:
     loader: str
     role: str
     model_class: str | None = None
+    figshare_folder: str = ""
 
     @property
     def cache_path(self) -> Path:
@@ -95,6 +98,7 @@ def fixture_specs(manifest: Mapping[str, Any] | None = None) -> list[FixtureSpec
             FixtureSpec(
                 logical_id=str(row["logical_id"]),
                 figshare_filename=str(row["figshare_filename"]),
+                figshare_folder=_normalize_folder(row.get("figshare_folder", "")),
                 cache_relative_path=str(row["cache_relative_path"]),
                 sha256=str(row["sha256"]).upper(),
                 loader=str(row.get("loader", "")),
@@ -165,6 +169,27 @@ def _stream_download(url: str, dest_part: Path) -> None:
             handle.write(chunk)
 
 
+def figshare_doi_url(article_id: int) -> str:
+    return f"https://doi.org/{FIGSHARE_DOI_PREFIX}{int(article_id)}"
+
+
+def _normalize_folder(folder: str | None) -> str:
+    return str(folder or "").replace("\\", "/").strip().strip("/")
+
+
+def embargo_or_unpublished_message(article_id: int, *, http_code: int | None = None) -> str:
+    """Explain a Figshare record that is reserved but not anonymously downloadable."""
+    code_bit = f" (HTTP {http_code})" if http_code is not None else ""
+    doi = figshare_doi_url(article_id)
+    return (
+        f"Figshare article {article_id} is reserved at {doi} but files are not "
+        f"available from the public Figshare API{code_bit}. "
+        "This can happen while a record is under embargo or not yet public. "
+        "Re-run `decision-logic-audit fetch-fixtures` when the API lists files, "
+        "or stage them with `decision-logic-audit fetch-fixtures --from-dir PATH`."
+    )
+
+
 def query_figshare_files(article_id: int) -> list[dict[str, Any]]:
     url = FIGSHARE_API.format(article_id=int(article_id))
     request = urllib.request.Request(url, headers={"User-Agent": "decision-logic-audit/1.0.0"})
@@ -172,11 +197,9 @@ def query_figshare_files(article_id: int) -> list[dict[str, Any]]:
         with urllib.request.urlopen(request, timeout=60) as response:
             payload = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
-        if exc.code == 404:
+        if exc.code in _EMBARGO_HTTP_CODES:
             raise FixtureError(
-                f"Figshare article {article_id} is not publicly available (HTTP 404). "
-                "Publish the fixture record, or stage files with "
-                "`decision-logic-audit fetch-fixtures --from-dir PATH`."
+                embargo_or_unpublished_message(article_id, http_code=exc.code)
             ) from exc
         raise FixtureError(f"Figshare API request failed: HTTP {exc.code}") from exc
     except urllib.error.URLError as exc:
@@ -184,23 +207,91 @@ def query_figshare_files(article_id: int) -> list[dict[str, Any]]:
             "Could not reach the Figshare API. Check network access, or stage "
             "files offline with `--from-dir`."
         ) from exc
+    if payload.get("is_embargoed"):
+        files = payload.get("files")
+        downloadable = isinstance(files, list) and any(
+            row.get("download_url") or row.get("url") for row in files
+        )
+        if not downloadable:
+            raise FixtureError(embargo_or_unpublished_message(article_id))
     files = payload.get("files")
     if not isinstance(files, list):
         raise FixtureError(f"Figshare article {article_id} did not return a file list")
-    return files
-
-
-def _download_url_for(filename: str, files: Sequence[Mapping[str, Any]]) -> str:
+    if not files:
+        raise FixtureError(embargo_or_unpublished_message(article_id))
+    folders = payload.get("folder_structure") or {}
+    enriched: list[dict[str, Any]] = []
     for row in files:
-        if str(row.get("name")) == filename:
-            url = row.get("download_url") or row.get("url")
-            if not url:
-                raise FixtureError(f"Figshare file {filename!r} has no download URL")
-            return str(url)
-    available = ", ".join(sorted(str(r.get("name")) for r in files)) or "(none)"
+        item = dict(row)
+        file_id = row.get("id")
+        folder = ""
+        if file_id is not None:
+            folder = folders.get(str(file_id), folders.get(file_id, "")) or ""
+        item["folder"] = _normalize_folder(str(folder))
+        enriched.append(item)
+    return enriched
+
+
+def _available_figshare_paths(files: Sequence[Mapping[str, Any]]) -> str:
+    labels = []
+    for row in files:
+        name = str(row.get("name") or "")
+        folder = _normalize_folder(row.get("folder"))
+        labels.append(f"{folder}/{name}" if folder else name)
+    return ", ".join(sorted(labels)) or "(none)"
+
+
+def _download_url_for(
+    filename: str,
+    files: Sequence[Mapping[str, Any]],
+    *,
+    folder: str = "",
+) -> str:
+    want_folder = _normalize_folder(folder)
+    matches: list[Mapping[str, Any]] = []
+    for row in files:
+        if str(row.get("name")) != filename:
+            continue
+        if _normalize_folder(row.get("folder")) != want_folder:
+            continue
+        matches.append(row)
+    if not matches:
+        raise FixtureError(
+            f"Figshare record does not contain {filename!r} in folder "
+            f"{want_folder or '(article root)'}. Available: {_available_figshare_paths(files)}. "
+            "Update fixtures/manifest.yaml to match the published record."
+        )
+    if len(matches) > 1:
+        raise FixtureError(
+            f"Figshare filename {filename!r} is ambiguous in folder "
+            f"{want_folder or '(article root)'}. Set figshare_folder to disambiguate."
+        )
+    url = matches[0].get("download_url") or matches[0].get("url")
+    if not url:
+        raise FixtureError(
+            f"Figshare file {filename!r} has no public download URL. "
+            "Re-run `decision-logic-audit fetch-fixtures` when the API exposes one, "
+            "or stage files with `--from-dir PATH`."
+        )
+    return str(url)
+
+
+def _staging_source(from_dir: Path, spec: FixtureSpec) -> Path:
+    root = Path(from_dir)
+    candidates: list[Path] = []
+    if spec.figshare_folder:
+        candidates.append(root / spec.figshare_folder / spec.figshare_filename)
+    candidates.append(root / spec.figshare_filename)
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    expected = spec.figshare_filename
+    if spec.figshare_folder:
+        expected = f"{spec.figshare_folder}/{spec.figshare_filename}"
     raise FixtureError(
-        f"Figshare record does not contain {filename!r}. Available filenames: {available}. "
-        "Update fixtures/manifest.yaml to match the published record."
+        f"Local staging directory {from_dir} does not contain {expected}. "
+        "Place files using the Figshare folder layout from the manifest, "
+        "or a flat directory of those basenames."
     )
 
 
@@ -223,12 +314,7 @@ def fetch_one(
         }
 
     if from_dir is not None:
-        source = Path(from_dir) / spec.figshare_filename
-        if not source.is_file():
-            raise FixtureError(
-                f"Local staging directory {from_dir} does not contain {spec.figshare_filename}. "
-                "Place files using the exact Figshare filenames from the manifest."
-            )
+        source = _staging_source(Path(from_dir), spec)
         actual = _copy_verified(source, dest, spec.sha256, force=True)
         return {
             "logical_id": spec.logical_id,
@@ -238,7 +324,11 @@ def fetch_one(
         }
 
     files = list(figshare_files) if figshare_files is not None else query_figshare_files(article_id)
-    url = _download_url_for(spec.figshare_filename, files)
+    url = _download_url_for(
+        spec.figshare_filename,
+        files,
+        folder=spec.figshare_folder,
+    )
     dest.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp_name = tempfile.mkstemp(prefix=dest.name + ".", suffix=".part", dir=dest.parent)
     tmp = Path(tmp_name)

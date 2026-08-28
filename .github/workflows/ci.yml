@@ -31,3 +31,22 @@ jobs:
         run: |
           python -c "import ablation, audit_scoring, models, regime_representation, rl_factory_shim, decision_logic_audit"
           python -c "from decision_logic_audit.cli import build_parser; build_parser().parse_args(['diagnose'])"
+
+  figshare-fixtures:
+    name: Ubuntu / Figshare fixture checksum
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+      - name: Download and verify fixtures
+        env:
+          DECISION_LOGIC_AUDIT_CACHE: ${{ runner.temp }}/decision-logic-audit-cache
+        run: |
+          python -m decision_logic_audit fetch-fixtures --force
+          python -m pytest tests/test_fixture_loaders.py

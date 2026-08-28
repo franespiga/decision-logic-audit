@@ -30,7 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--from-dir",
         type=Path,
         default=None,
-        help="copy files named exactly as in the manifest from a local directory instead of Figshare",
+        help="copy Figshare-named files from a local directory instead of downloading",
     )
 
     demo = sub.add_parser(

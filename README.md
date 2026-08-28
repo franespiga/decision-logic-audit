@@ -50,7 +50,9 @@ The public demo loads three frozen artefacts:
 3. The derived aligned market-data HDF5 used by the existing
    cross-architecture workflow
 
-Those files are hosted on Figshare under CC BY 4.0. Source code is GPL-3.0-only.
+Those files are hosted on Figshare under CC BY 4.0
+(DOI [`10.6084/m9.figshare.33331437`](https://doi.org/10.6084/m9.figshare.33331437)).
+Source code is GPL-3.0-only.
 
 The demo calls the existing scientific runner
 `ablation.cross_architecture.run` with `--pilot` (reduced sample size only).
@@ -97,8 +99,8 @@ PyPortfolioOpt helpers that are not required by the public demo).
 decision-logic-audit fetch-fixtures
 ```
 
-The command queries the public Figshare article API, downloads by exact
-manifest filename, verifies SHA-256, and stores files under:
+The command queries the public Figshare article API, selects files by folder
+and basename, verifies SHA-256, and stores them under:
 
 ```text
 %USERPROFILE%\.cache\decision-logic-audit\v1\   (Windows)
@@ -107,7 +109,8 @@ manifest filename, verifies SHA-256, and stores files under:
 
 Override the cache root with `DECISION_LOGIC_AUDIT_CACHE`.
 
-Offline staging from a directory whose filenames match the manifest:
+Offline staging from a directory that uses the Figshare names (nested folders
+or a flat copy of the four demo files):
 
 ```powershell
 decision-logic-audit fetch-fixtures --from-dir PATH\to\figshare_files
