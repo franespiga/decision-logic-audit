@@ -1,9 +1,11 @@
 cff-version: 1.2.0
 title: decision-logic-audit
-message: Please cite the accepted ESWA article and this software version.
+message: Please cite the ESWA article and this software version.
 type: software
 version: 1.0.0
 license: GPL-3.0-only
+url: "https://github.com/franespiga/decision-logic-audit"
+repository-code: "https://github.com/franespiga/decision-logic-audit"
 authors:
   - family-names: Espiga-Fernández
     given-names: Francisco
@@ -32,4 +34,4 @@ preferred-citation:
       given-names: Álvaro
   journal: Expert Systems with Applications
   year: 2026
-  notes: Accepted manuscript. Article DOI omitted until assigned.
+  doi: 10.1016/j.eswa.2026.134157
