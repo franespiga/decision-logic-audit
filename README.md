@@ -154,6 +154,10 @@ Importable scientific packages include `ablation`, `audit`, `audit_scoring`,
 `models`, `regime_representation`, `rl_factory_shim`, `financial_alignment`,
 and `model_comparison`.
 
+## Documentation
+
+[Adding another model architecture and adapting to other sequential domains](docs/ADDING_MODEL_ARCHITECTURE.md)
+
 ## Output locations
 
 - Public demo: `outputs/demo/`
